@@ -13,6 +13,7 @@
 <body>
 
   <div id="mapVis"></div>
+  <div id="barVis"></div>
 
 
   <script>
@@ -30,6 +31,10 @@
       actions: { export: true, source: true, compiled: true, editor: true }
     }).catch(console.error);
 
+
+      vegaEmbed("#barVis", "js/bar_grouped.vg.json", {
+        actions: { export: true, source: true, compiled: true, editor: true }
+    }).catch(console.error);
 
   </script>
 </body>
