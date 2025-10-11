@@ -18,6 +18,9 @@
   <h2>Stage Gap per State</h2>
   <div id="visDumbbell"></div>
 
+  <h2>National Trend by Stage</h2>
+  <div id="visTrend"></div>
+
 
   <script>
     const commonConfig = {
@@ -34,7 +37,6 @@
       actions: { export: true, source: true, compiled: true, editor: true }
     }).catch(console.error);
 
-
     vegaEmbed("#barVis", "js/bar_grouped.vg.json", {
         actions: { export: true, source: true, compiled: true, editor: true }
     }).catch(console.error);
@@ -42,6 +44,12 @@
     vegaEmbed("#visDumbbell", "js/dumbbell_stage_gap.vg.json", {
       actions: { export: true, source: true, compiled: true, editor: true }
     }).catch(console.error);
+
+    vegaEmbed("#visTrend", "js/trend_national.vg.json", {
+      actions: { export: true, source: true, compiled: true, editor: true }
+    }).catch(console.error);
+
+    
 
 
   </script>

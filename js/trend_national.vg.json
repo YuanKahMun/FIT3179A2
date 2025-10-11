@@ -1,0 +1,53 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": { "text": "Basic Education Access Over Time by Stage — Students per 1,000 Population" },
+  "data": {
+    "url": "https://yuankahmun.github.io/FIT3179W10HW/data/compiled_my_basiced_districtenrolment.csv"
+  },
+
+  "params": [
+    {
+      "name": "StateSel",
+      "value": "Johor",
+      "bind": {
+        "input": "select",
+        "name": "State: ",
+        "options": [
+          "Johor","Kedah","Kelantan","Melaka","Negeri Sembilan","Pahang","Perak","Perlis",
+          "Pulau Pinang","Sabah","Sarawak","Selangor","Terengganu","Kuala Lumpur","Labuan","Putrajaya"
+        ]
+      }
+    }
+  ],
+
+  "transform": [
+    {
+      "calculate": "indexof(datum.state,'W.p. ')==0 ? substring(datum.state,5) : datum.state",
+      "as": "state_norm"
+    },
+    { "filter": "datum.state_norm == StateSel" }
+  ],
+
+  "mark": { "type": "line", "point": true },
+
+  "encoding": {
+    "x": { "field": "year", "type": "ordinal", "title": "Year" },
+    "y": {
+      "field": "students_per_1000_pop",
+      "type": "quantitative",
+      "title": "Students per 1,000",
+      "scale": { "domain": [0, 600] }
+    },
+    "color": { "field": "stage", "type": "nominal", "title": "Stage" },
+    "tooltip": [
+      { "field": "state_norm", "title": "State" },
+      { "field": "stage", "title": "Stage" },
+      { "field": "year", "title": "Year" },
+      { "field": "students_per_1000_pop", "title": "Per 1,000", "format": ".1f" }
+    ]
+  },
+
+  "width": 840,
+  "height": 360,
+  "config": { "view": { "stroke": null } }
+}
