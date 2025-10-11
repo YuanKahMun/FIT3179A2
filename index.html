@@ -13,13 +13,18 @@
 <body>
 
   <div id="mapVis"></div>
+
   <div id="barVis"></div>
     
-  <h2>Stage Gap per State</h2>
   <div id="visDumbbell"></div>
 
-  <h2>National Trend by Stage</h2>
   <div id="visTrend"></div>
+
+  <div id="visSide"></div>
+
+  <div id="visStripCrowding"></div>
+
+  
 
 
   <script>
@@ -49,8 +54,16 @@
       actions: { export: true, source: true, compiled: true, editor: true }
     }).catch(console.error);
 
-    
+    vegaEmbed("#visSide", "js/side_by_side_ratio.vg.json", {
+      actions: { export: true, source: true, compiled: true, editor: true }
+    }).catch(console.error);
 
+    vegaEmbed("#visStripCrowding", "js/strip_crowding.vg.json", {
+      actions: { export: true, source: true, compiled: true, editor: true }
+    }).catch(console.error);
+
+
+    
 
   </script>
 </body>

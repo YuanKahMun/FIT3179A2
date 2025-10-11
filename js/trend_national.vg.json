@@ -1,9 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": { "text": "Basic Education Access Over Time by Stage — Students per 1,000 Population" },
-  "data": {
-    "url": "https://yuankahmun.github.io/FIT3179W10HW/data/compiled_my_basiced_districtenrolment.csv"
-  },
+  "title": { "text": "How access changes over time — Students per 1,000 by stage (selected state)", "subtitle": "2017–2022" },
+  "data": { "url": "../data/compiled_my_basiced_districtenrolment.csv" },
 
   "params": [
     {
@@ -21,10 +19,7 @@
   ],
 
   "transform": [
-    {
-      "calculate": "indexof(datum.state,'W.p. ')==0 ? substring(datum.state,5) : datum.state",
-      "as": "state_norm"
-    },
+    { "calculate": "indexof(datum.state,'W.p. ')==0 ? substring(datum.state,5) : datum.state", "as": "state_norm" },
     { "filter": "datum.state_norm == StateSel" }
   ],
 
@@ -35,10 +30,13 @@
     "y": {
       "field": "students_per_1000_pop",
       "type": "quantitative",
-      "title": "Students per 1,000",
+      "title": "Students per 1,000 population",
       "scale": { "domain": [0, 600] }
     },
-    "color": { "field": "stage", "type": "nominal", "title": "Stage" },
+    "color": {
+      "field": "stage", "type": "nominal", "title": "Stage",
+      "scale": { "domain": ["primary","secondary"], "range": ["#4e79a7","#f28e2b"] }
+    },
     "tooltip": [
       { "field": "state_norm", "title": "State" },
       { "field": "stage", "title": "Stage" },

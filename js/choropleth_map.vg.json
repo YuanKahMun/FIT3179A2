@@ -1,83 +1,80 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "title": {
-    "text": "Basic Education Access Across Malaysian States — Primary & Secondary School Distribution",
-    "subtitle": "Student Enrolment Rate (per 1,000 Population)"
+    "text": "Where access is highest/lowest — Students per 1,000 population by state",
+    "subtitle": "Primary or Secondary · Selected Year"
   },
   "width": 840,
   "height": 520,
 
   "projection": {
     "type": "mercator",
-    "center": [109.3, 4.2],      
-    "scale": 1850,              
-    "translate": [420, 260]     
+    "center": [109.3, 4.2],
+    "scale": 1850,
+    "translate": [420, 260]
   },
 
   "params": [
-    { "name": "stageParam", "value": "primary",
-      "bind": { "input": "select", "options": ["primary","secondary"], "name": "Stage: " } },
-    { "name": "yearParam", "value": "2022",
-      "bind": { "input": "select", "options": ["2017","2018","2019","2020","2021","2022"], "name": " Year: " } }
+    {
+      "name": "StageSel",
+      "value": "primary",
+      "bind": { "input": "select", "options": ["primary","secondary"], "name": "Stage: " }
+    },
+    {
+      "name": "YearSel",
+      "value": 2022,
+      "bind": { "input": "select", "options": [2017,2018,2019,2020,2021,2022], "name": " Year: " }
+    }
   ],
 
   "layer": [
     {
       "data": { "graticule": { "step": [3, 3] } },
-  "mark": { "type": "geoshape", "fill": null, "stroke": "#d9d9d9", "strokeWidth": 0.5, "opacity": 0.8 }
+      "mark": { "type": "geoshape", "fill": null, "stroke": "#d9d9d9", "strokeWidth": 0.5, "opacity": 0.8 }
     },
-
     {
-      "data": {
-        "url": "../data/malaysia_states.topojson",
-        "format": { "type": "topojson", "feature": "states" }
-      },
-  "mark": { "type": "geoshape", "fill": "#f2f2f2", "stroke": "white", "strokeWidth": 0.5 }
+      "data": { "url": "../data/malaysia_states.topojson", "format": { "type": "topojson", "feature": "states" } },
+      "mark": { "type": "geoshape", "fill": "#f2f2f2", "stroke": "white", "strokeWidth": 0.5 }
     },
-
     {
       "data": { "url": "../data/compiled_my_basiced_districtenrolment.csv" },
       "transform": [
-        { "filter": "datum.stage == stageParam" },
-        { "filter": "toString(datum.year) == toString(yearParam)" },
+        { "filter": "datum.stage == StageSel" },
+        { "filter": "datum.year == YearSel" },
         { "calculate": "indexof(datum.state,'W.p. ')==0 ? substring(datum.state,5) : datum.state", "as": "state_norm" },
         {
           "lookup": "state_norm",
           "from": {
-            "data": {
-              "url": "../data/malaysia_states.topojson",
-              "format": { "type": "topojson", "feature": "states" }
-            },
+            "data": { "url": "../data/malaysia_states.topojson", "format": { "type": "topojson", "feature": "states" } },
             "key": "properties.name",
             "fields": ["type","properties","geometry"]
           }
         }
       ],
-  "mark": { "type": "geoshape", "stroke": "white", "strokeWidth": 0.5 },
+      "mark": { "type": "geoshape", "stroke": "white", "strokeWidth": 0.5 },
       "encoding": {
         "color": {
           "field": "students_per_1000_pop",
           "type": "quantitative",
-          "title": "Enrolment rate per 1000 population",
+          "title": "Students per 1,000 population",
           "scale": { "type": "quantize", "domain": [0, 600], "scheme": { "name": "browns", "count": 5 } }
         },
         "tooltip": [
           { "field": "state_norm", "title": "State" },
           { "field": "stage", "title": "Stage" },
           { "field": "year",  "title": "Year" },
-          { "field": "students_per_1000_pop", "title": "per 1,000", "format": ".1f" },
-          { "field": "students_per_school", "title": "per school", "format": ".1f" },
+          { "field": "students_per_1000_pop", "title": "Per 1,000", "format": ".1f" },
+          { "field": "students_per_school", "title": "Per school", "format": ".1f" },
           { "field": "students", "title": "Students", "format": "," },
           { "field": "schools",  "title": "Schools",  "format": "," }
         ]
       }
     },
-
     {
       "data": { "url": "../data/compiled_my_basiced_districtenrolment.csv" },
       "transform": [
-        { "filter": "datum.stage == stageParam" },
-        { "filter": "toString(datum.year) == toString(yearParam)" },
+        { "filter": "datum.stage == StageSel" },
+        { "filter": "datum.year == YearSel" },
         { "calculate": "indexof(datum.state,'W.p. ')==0 ? substring(datum.state,5) : datum.state", "as": "state_norm" },
         { "calculate": "toNumber(datum.students_per_1000_pop)", "as": "rate" },
         { "calculate": "toNumber(datum.lat)", "as": "lat_n" },
@@ -86,30 +83,22 @@
         { "calculate": "toString(datum.r) + '. ' + datum.state_norm", "as": "label" },
         { "filter": "datum.r <= 5" }
       ],
-      "mark": {
-        "type": "text",
-        "fontSize": 12,
-        "fontWeight": "bold",
-        "dx": 6, "dy": -6
-      },
+      "mark": { "type": "text", "fontSize": 12, "fontWeight": "bold", "dx": 6, "dy": -6 },
       "encoding": {
         "longitude": { "field": "lng_n" },
         "latitude":  { "field": "lat_n" },
-  "text": { "field": "label", "type": "nominal" },
+        "text": { "field": "label", "type": "nominal" },
         "tooltip": [
           { "field": "r", "title": "Rank" },
           { "field": "state_norm", "title": "State" },
-          { "field": "rate", "title": "Rate (per 1,000)", "format": ".1f" }
+          { "field": "rate", "title": "Per 1,000", "format": ".1f" }
         ]
       }
     }
-
-
-
-
   ],
 
   "config": {
+    "view": { "stroke": null },
     "scale": { "invalid": { "color": { "value": "lightgray" } } },
     "mark": { "invalid": "show" }
   }

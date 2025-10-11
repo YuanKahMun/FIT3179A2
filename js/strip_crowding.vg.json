@@ -1,0 +1,93 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Crowding deviation — Students per school vs national median",
+    "subtitle": "Selected Stage & Year · Positive = more crowded than median"
+  },
+  "data": { "url": "../data/compiled_my_basiced_districtenrolment.csv" },
+
+  "params": [
+    { "name": "StageSel", "value": "primary",
+      "bind": { "input": "select", "options": ["primary","secondary"], "name": "Stage: " } },
+    { "name": "YearSel", "value": 2022,
+      "bind": { "input": "select", "options": [2017,2018,2019,2020,2021,2022], "name": " Year: " } }
+  ],
+
+  "transform": [
+    { "filter": "datum.stage == StageSel && datum.year == YearSel" },
+    { "calculate": "indexof(datum.state,'W.p. ')==0 ? substring(datum.state,5) : datum.state", "as": "state_norm" },
+    { "joinaggregate": [ { "op": "median", "field": "students_per_school", "as": "med_sps" } ] },
+    { "calculate": "datum.students_per_school - datum.med_sps", "as": "dev" }
+  ],
+
+  "layer": [
+    {
+      "mark": { "type": "point", "filled": true, "size": 70, "opacity": 0.9 },
+      "encoding": {
+        "y": {
+          "field": "state_norm",
+          "type": "nominal",
+          "title": "States & Federal Territories",
+          "sort": { "field": "dev", "order": "descending" },
+          "axis": { "labelLimit": 180 }
+        },
+        "x": {
+          "field": "dev",
+          "type": "quantitative",
+          "title": "Deviation from national median (students per school)"
+        },
+        "color": {
+          "field": "stage",
+          "type": "nominal",
+          "legend": null,
+          "scale": { "domain": ["primary","secondary"], "range": ["#4e79a7", "#f28e2b"] }
+        },
+        "tooltip": [
+          { "field": "state_norm", "title": "State" },
+          { "field": "stage", "title": "Stage" },
+          { "field": "year", "title": "Year" },
+          { "field": "students_per_school", "title": "Students/school", "format": ".1f" },
+          { "field": "med_sps", "title": "National median", "format": ".1f" },
+          { "field": "dev", "title": "Deviation", "format": ".1f" }
+        ]
+      }
+    },
+
+    {  
+      "mark": { "type": "rule", "strokeDash": [4,4] },
+      "encoding": { "x": { "datum": 0, "type": "quantitative" } }
+    },
+
+    {
+      "transform": [
+        { "window": [ { "op": "rank", "as": "rank_pos" } ],
+          "sort": [ { "field": "dev", "order": "descending" } ] },
+        { "filter": "datum.rank_pos <= 3 && datum.dev > 0" }
+      ],
+      "mark": { "type": "text", "dy": -6, "align": "center", "baseline": "bottom", "fontWeight": "bold" },
+      "encoding": {
+        "y": { "field": "state_norm", "type": "nominal" },
+        "x": { "field": "dev", "type": "quantitative" },
+        "text": { "field": "state_norm" }
+      }
+    },
+
+    {  
+      "transform": [
+        { "window": [ { "op": "rank", "as": "rank_neg" } ],
+          "sort": [ { "field": "dev", "order": "ascending" } ] },
+        { "filter": "datum.rank_neg <= 3 && datum.dev < 0" }
+      ],
+      "mark": { "type": "text", "dy": -6, "align": "center", "baseline": "bottom", "fontWeight": "bold" },
+      "encoding": {
+        "y": { "field": "state_norm", "type": "nominal" },
+        "x": { "field": "dev", "type": "quantitative" },
+        "text": { "field": "state_norm" }
+      }
+    }
+  ],
+
+  "width": 720,
+  "height": { "step": 20 },
+  "config": { "view": { "stroke": null } }
+}

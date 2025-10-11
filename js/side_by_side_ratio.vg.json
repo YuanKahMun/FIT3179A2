@@ -1,0 +1,101 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": { "text": "Population vs Students — side-by-side, ratio-sorted by students/population" },
+  "data": { "url": "../data/compiled_my_basiced_districtenrolment.csv" },
+
+  "params": [
+    { "name": "StageSel", "value": "primary", "bind": { "input": "select", "options": ["primary","secondary"], "name": "Stage: " } },
+    { "name": "YearSel", "value": 2022, "bind": { "input": "select", "options": [2017,2018,2019,2020,2021,2022], "name": " Year: " } }
+  ],
+
+  "transform": [
+    { "filter": "datum.stage == StageSel && datum.year == YearSel" },
+    { "calculate": "indexof(datum.state,'W.p. ')==0 ? substring(datum.state,5) : datum.state", "as": "state_norm" },
+    {
+      "aggregate": [
+        { "op": "sum", "field": "population", "as": "sum_population" },
+        { "op": "sum", "field": "students", "as": "sum_students" }
+      ],
+      "groupby": ["state_norm"]
+    },
+    { "calculate": "datum.sum_students / max(datum.sum_population, 1)", "as": "stud_pop_ratio" },
+    { "fold": ["sum_population", "sum_students"], "as": ["metric_key", "count"] },
+    { "calculate": "datum.metric_key == 'sum_population' ? 'Population' : 'Students'", "as": "metric_label" },
+
+    { "joinaggregate": [{ "op": "max", "field": "count", "as": "max_count" }], "groupby": ["metric_label"] },
+    { "calculate": "datum.count == datum.max_count", "as": "is_max" }
+  ],
+
+  "columns": 2,
+  "facet": {
+    "column": {
+      "field": "metric_label",
+      "type": "nominal",
+      "title": null,
+      "sort": ["Population", "Students"],
+      "header": {
+        "labelExpr": "datum.label == 'Population' ? 'Population (total)' : 'Students (total)'"
+      }
+    }
+  },
+
+  "spec": {
+    "layer": [
+      {
+        "mark": { "type": "bar" },
+        "encoding": {
+          "y": {
+            "field": "state_norm",
+            "type": "nominal",
+            "sort": { "field": "stud_pop_ratio", "order": "descending" },
+            "title": "States & Federal Territories",
+            "axis": { "labelLimit": 180 }
+          },
+          "x": {
+            "field": "count",
+            "type": "quantitative",
+            "title": "Total",
+            "axis": { "format": "s" }
+          },
+          "color": {
+            "field": "metric_label",
+            "type": "nominal",
+            "legend": null,
+            "scale": { "domain": ["Population", "Students"], "range": ["#4e79a7", "#f28e2b"] }
+          },
+          "opacity": {
+            "condition": { "test": "datum.is_max", "value": 1 },
+            "value": 0.3
+          },
+          "stroke": { "value": "black" },
+          "strokeWidth": {
+            "condition": { "test": "datum.is_max", "value": 1.5 },
+            "value": 0
+          },
+          "tooltip": [
+            { "field": "state_norm", "title": "State" },
+            { "field": "sum_population", "title": "Population (total)", "format": "," },
+            { "field": "sum_students", "title": "Students (total)", "format": "," },
+            { "field": "stud_pop_ratio", "title": "Students per person", "format": ".3f" }
+          ]
+        }
+      },
+
+      {
+        "transform": [{ "filter": "datum.is_max" }],
+        "mark": { "type": "text", "dx": 6, "align": "left", "fontWeight": "bold" },
+        "encoding": {
+          "y": { "field": "state_norm", "type": "nominal" },
+          "x": { "field": "count", "type": "quantitative" },
+          "text": { "field": "count", "type": "quantitative", "format": "s" },
+          "color": { "value": "#333" }
+        }
+      }
+    ],
+    "width": 360,
+    "height": { "step": 20 }
+  },
+
+  "resolve": { "scale": { "x": "independent" } },
+  "config": { "view": { "stroke": null } }
+}
