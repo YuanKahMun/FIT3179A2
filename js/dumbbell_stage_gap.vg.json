@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": {"text": "Stage Gap per State — Students per 1,000 (Dumbbell)"},
+  "title": {"text": "Stage Gap per State — Students per 1,000 Population"},
   "data": {
     "url": "../data/compiled_my_basiced_districtenrolment.csv"
   },
