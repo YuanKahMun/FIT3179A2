@@ -14,6 +14,9 @@
 
   <div id="mapVis"></div>
   <div id="barVis"></div>
+    
+  <h2>Stage Gap per State</h2>
+  <div id="visDumbbell"></div>
 
 
   <script>
@@ -32,9 +35,14 @@
     }).catch(console.error);
 
 
-      vegaEmbed("#barVis", "js/bar_grouped.vg.json", {
+    vegaEmbed("#barVis", "js/bar_grouped.vg.json", {
         actions: { export: true, source: true, compiled: true, editor: true }
     }).catch(console.error);
+
+    vegaEmbed("#visDumbbell", "js/dumbbell_stage_gap.vg.json", {
+      actions: { export: true, source: true, compiled: true, editor: true }
+    }).catch(console.error);
+
 
   </script>
 </body>
