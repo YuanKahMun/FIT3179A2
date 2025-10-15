@@ -4,7 +4,7 @@
     "text": "Crowding deviation — Students per school vs national median",
     "subtitle": "Selected Stage & Year · Positive = more crowded than median"
   },
-  "data": { "url": "../data/compiled_my_basiced_districtenrolment.csv" },
+  "data": { "url": "https://yuankahmun.github.io/FIT3179A2/data/compiled_my_basiced_districtenrolment.csv" },
 
   "params": [
     { "name": "StageSel", "value": "primary",
