@@ -111,6 +111,8 @@
   </div>
 
 <script>
+  let view; // to hold the main vega view instance
+
   vegaEmbed("#dashboard", "js/dashboard_basic_ed.vg.json", {actions:false, renderer:"svg"})
     .then(async ({view}) => {
       const stageEl = document.getElementById('stage-select');
