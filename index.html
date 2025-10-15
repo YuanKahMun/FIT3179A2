@@ -3,68 +3,139 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Basic Education Access — Malaysia</title>
-  <link rel="stylesheet" href="css/styles.css" />
+  <title>Basic Education Access in Malaysia</title>
+
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600&family=PT+Serif:wght@700&display=swap" rel="stylesheet">
+
+  <!-- Pure.css -->
+  <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/pure-min.css" 
+        integrity="sha384-cg6SkqEOCV1NbJoCu11+bm0NvBRc8IYLRGXkmNrqUBfTjmMYwNKPWBTIKyw9mHNJ" 
+        crossorigin="anonymous">
+
+  <!-- Vega libraries -->
   <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+
+  <!-- Your styles -->
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
-
-  <div id="mapVis"></div>
-
-  <div id="barVis"></div>
+  <div class="page">
     
-  <div id="visDumbbell"></div>
+    <!-- Page Header Section -->
+    <div class="page-header">
+      <h1>Basic Education Access Across Malaysia</h1>
+      <p class="subtitle">Interactive multiple views: Select Stage, Year & State once and explore across coordinated charts</p>
+      <p class="meta">Author: Yuan Kah Mun · Last updated: 15 October 2025</p>
 
-  <div id="visTrend"></div>
+    </div>
 
-  <div id="visSide"></div>
+    <!-- Custom Filters -->
+    <div class="custom-filters">
+      <div class="filter-group">
+        <label for="stage-select">Stage:</label>
+        <select id="stage-select">
+          <option value="primary" selected>primary</option>
+          <option value="secondary">secondary</option>
+        </select>
+      </div>
+      
+      <div class="filter-group">
+        <label for="year-select">Year:</label>
+        <select id="year-select">
+          <option value="2017">2017</option>
+          <option value="2018">2018</option>
+          <option value="2019">2019</option>
+          <option value="2020">2020</option>
+          <option value="2021">2021</option>
+          <option value="2022" selected>2022</option>
+        </select>
+      </div>
+      
+      <div class="filter-group">
+        <label for="state-select">State:</label>
+        <select id="state-select">
+          <option value="Johor" selected>Johor</option>
+          <option value="Kedah">Kedah</option>
+          <option value="Kelantan">Kelantan</option>
+          <option value="Melaka">Melaka</option>
+          <option value="Negeri Sembilan">Negeri Sembilan</option>
+          <option value="Pahang">Pahang</option>
+          <option value="Perak">Perak</option>
+          <option value="Perlis">Perlis</option>
+          <option value="Pulau Pinang">Pulau Pinang</option>
+          <option value="Sabah">Sabah</option>
+          <option value="Sarawak">Sarawak</option>
+          <option value="Selangor">Selangor</option>
+          <option value="Terengganu">Terengganu</option>
+          <option value="Kuala Lumpur">Kuala Lumpur</option>
+          <option value="Labuan">Labuan</option>
+          <option value="Putrajaya">Putrajaya</option>
+        </select>
+      </div>
+    </div>
 
-  <div id="visStripCrowding"></div>
+    <!-- Dashboard Visualization -->
+    <div id="dashboard" class="vis-container"></div>
 
-  
+    <!-- Footer -->
+    <div class="small-font">
+    <p>This visualization explores basic education access patterns in Malaysia.     </p>
+    <p class="meta"><br>Data Source:</p>
 
+    <p class="meta">
+    1. OpenDOSM —
+    <a href="https://open.dosm.gov.my/data-catalogue/schools_district?state=kedah&district=all-districts&stage=secondary&type=sekolah-menengah-kerajaan&visual=table" target="_blank">
+        https://open.dosm.gov.my/data-catalogue/schools_district?state=kedah&district=all-districts&stage=secondary&type=sekolah-menengah-kerajaan&visual=table
+    </a>
+    </p>
 
-  <script>
-    const commonConfig = {
-        font: "DM Sans",
-        title: { font: "PT Serif", fontSize: 18, fontWeight: 700,
-            subtitleFont: "PT Serif", subtitleFontSize: 14},
-        axis:  { labelFont: "DM Sans", titleFont: "PT Serif", titleFontWeight: 700 },
-        legend:{ labelFont: "DM Sans", titleFont: "PT Serif", titleFontWeight: 700 },
-        header:{ labelFont: "DM Sans", titleFont: "PT Serif", titleFontWeight: 700 },
-        view:  { stroke: null }
-    };
+    <p class="meta">
+    2. OpenDOSM —
+    <a href="https://open.dosm.gov.my/data-catalogue/enrolment_school_district?state=malaysia&district=all-districts&stage=post-secondary&sex=both&visual=table" target="_blank">
+        https://open.dosm.gov.my/data-catalogue/enrolment_school_district?state=malaysia&district=all-districts&stage=post-secondary&sex=both&visual=table
+    </a>
+    </p>
 
-    vegaEmbed("#mapVis", "js/choropleth_map.vg.json", {
-      actions: { export: true, source: true, compiled: true, editor: true }
-    }).catch(console.error);
+    <p class="meta">
+    3. simplemaps —
+    <a href="https://simplemaps.com/data/my-cities" target="_blank">
+        https://simplemaps.com/data/my-cities
+    </a>
+    </p>
 
-    vegaEmbed("#barVis", "js/bar_grouped.vg.json", {
-        actions: { export: true, source: true, compiled: true, editor: true }
-    }).catch(console.error);
+    </div>
 
-    vegaEmbed("#visDumbbell", "js/dumbbell_stage_gap.vg.json", {
-      actions: { export: true, source: true, compiled: true, editor: true }
-    }).catch(console.error);
+  </div>
 
-    vegaEmbed("#visTrend", "js/trend_national.vg.json", {
-      actions: { export: true, source: true, compiled: true, editor: true }
-    }).catch(console.error);
+<script>
+  vegaEmbed("#dashboard", "js/dashboard_basic_ed.vg.json", {actions:false, renderer:"svg"})
+    .then(async ({view}) => {
+      const stageEl = document.getElementById('stage-select');
+      const yearEl  = document.getElementById('year-select');
+      const stateEl = document.getElementById('state-select');
 
-    vegaEmbed("#visSide", "js/side_by_side_ratio.vg.json", {
-      actions: { export: true, source: true, compiled: true, editor: true }
-    }).catch(console.error);
+      async function syncAll() {
+        const y = parseInt(yearEl.value);
+        const k = Math.random(); // new key each interaction
+        await view
+          .signal('StageSel', stageEl.value)
+          .signal('YearSel',  y)
+          .signal('StateSel', stateEl.value)
+          .signal('Rekey',    k)
+          .runAsync();
+      }
 
-    vegaEmbed("#visStripCrowding", "js/strip_crowding.vg.json", {
-      actions: { export: true, source: true, compiled: true, editor: true }
-    }).catch(console.error);
+      // initial sync
+      await syncAll();
 
+      stageEl.addEventListener('change', syncAll);
+      yearEl .addEventListener('change', syncAll);
+      stateEl.addEventListener('change', syncAll);
+    });
+</script>
 
-    
-
-  </script>
 </body>
 </html>

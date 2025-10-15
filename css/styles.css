@@ -1,8 +1,154 @@
-#choropleth_map {
-	top:100px;
-	bottom: 100px; 
-	left: 100px;
-	right: 100px;
-	/*height: 1000px;
-	width: 800px;*/
+/* Typography */
+body * {
+  font-family: 'DM Sans', sans-serif;
+}
+
+h1 {
+  font-family: 'PT Serif', serif;
+  font-weight: 700;
+}
+
+body {
+  background-color: lightgray;
+  margin: 0;
+  padding: 0;
+}
+
+.page {
+  width: 1400px;
+  background-color: white;
+  margin: auto;
+  padding: 50px;
+  padding-top: 35px;
+}
+
+/* Page Header Styling */
+.page-header {
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.page-header h1 {
+  font-size: 50px;
+  margin: 0 0 10px 0;
+  color: #111;
+}
+
+.page-header .subtitle {
+  font-size: 16px;
+  margin: 0 0 8px 0;
+  color: #333;
+  line-height: 1.5;
+}
+
+.page-header .meta {
+  font-size: 14px;
+  margin: 0;
+  color: #666;
+}
+
+
+/* Footer styling */
+.small-font {
+  font-size: 14px;
+  color: #666;
+  border-top: 1px solid #e0e0e0;
+  padding-top: 20px;
+  margin-top: 20px;
+}
+
+.small-font p {
+  margin: 0;
+}
+
+/* Description sections */
+.description h2 {
+  margin-top: 0px;
+  font-family: 'PT Serif', serif;
+}
+
+.description-right {
+  padding-left: 20px;
+}
+
+.description-left {
+  padding-right: 20px;
+}
+
+.pure-g {
+  margin-bottom: 40px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1280px) {
+  .page-header,
+  .vis-container,
+  #dashboard,
+  .small-font {
+    width: 1080px;
+  }
+
+  .page {
+    width: 1180px;  
+  }
+  
+  .page-header h1 {
+    font-size: 28px;
+  }
+  
+  .vega-bind {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+
+
+.custom-filters {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  padding: 20px;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  margin: 30px 0;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filter-group label {
+  font-weight: 600;
+  font-family: 'PT Serif', serif;
+  font-size: 14px;
+}
+
+.filter-group select {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+  background-color: white;
+  cursor: pointer;
+}
+
+.filter-group select:hover {
+  border-color: #999;
+}
+
+.filter-group select:focus {
+  outline: none;
+  border-color: #4e79a7;
+  box-shadow: 0 0 0 2px rgba(78, 121, 167, 0.1);
+}
+
+/* Hide Vega's built-in filter controls */
+.vega-bind {
+  display: none !important;
 }
