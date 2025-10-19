@@ -20,27 +20,74 @@
 
   <!-- Your styles -->
   <link rel="stylesheet" href="css/styles.css" />
+
+  <style>
+    .section-title {
+      background-color: #fff9e6;
+      padding: 20px 30px;
+      margin: 40px 0 20px 0;
+      border-radius: 8px;
+      border-left: 4px solid #f0ad4e;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      color: #333;
+      font-family: 'PT Serif', serif;
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .section-title p {
+      margin: 8px 0 0 0;
+      color: #666;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+    }
+
+    .visualization-section {
+      margin-bottom: 50px;
+    }
+    
+    .insights-section {
+      display: flex;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .insight-box {
+      flex: 1;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      padding: 20px;
+      border: 1px solid #e9ecef;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+
+    .insight-box h3 {
+      margin-top: 0;
+      color: #343a40;
+      border-bottom: 2px solid #4e79a7;
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+    }
+
+    .insight-box p {
+      color: #495057;
+      line-height: 1.6;
+    }
+  </style>
 </head>
-
-
-
-
-
-
 <body>
   <div class="page">
-    
-    <!-- Page Header Section -->
+    <!-- Page Header -->
     <div class="page-header">
       <h1>Basic Education Access Across Malaysia</h1>
       <p class="subtitle">Interactive multiple views: Select Stage, Year & State once and explore across coordinated charts</p>
-      
-
     </div>
 
-    <!-- Custom Filters -->
+    <!-- Filters -->
     <div class="custom-filters">
-
       <div class="filter-group">
         <label for="stage-select">Stage:</label>
         <select id="stage-select">
@@ -85,101 +132,374 @@
 
       <div class="filter-group">
         <label for="zoom">Zoom:</label>
-        <input id="zoom" type="range" min="600" max="5000" step="50" value="1850">
+        <input id="zoom" type="range" min="600" max="5000" step="50" value="3000">
       </div>
 
       <div class="filter-group">
         <label for="center">Map centre:</label>
         <select id="center">
           <option value='[102,4.5]'>West Malaysia</option>
-          <option value='[114.5,2.0]'>East Malaysia</option>
+          <option value='[116,4]'>East Malaysia</option>
           <option value='[109.3,4.2]' selected>Whole Malaysia</option>
         </select>
       </div>
-
     </div>
 
-    <!-- Dashboard Visualization -->
-    <div id="dashboard" class="vis-container"></div>
+
+    <!-- Map Visualization Section -->
+    <div class="section-title">
+      <h2>Geographic Distribution of Education Access</h2>
+      <p>Explore how education access varies across Malaysian states</p>
+    </div>
+    <div class="visualization-section">
+      <div id="map-dashboard" class="vis-container"></div>
+      <div id="map-insights" class="insights-section">
+        <div class="insight-box" id="map-insight-1"></div>
+        <div class="insight-box" id="map-insight-2"></div>
+        <div class="insight-box" id="map-insight-3"></div>
+      </div>
+    </div>
+
+    <hr divider>
+
+    <!-- School Density Section -->
+    <div class="section-title">
+      <h2>School Density Analysis</h2>
+      <p>Average number of students per school within each state</p>
+    </div>
+    <div class="visualization-section">
+      <div id="school-density-dashboard" class="vis-container"></div>
+      <div id="school-density-insights" class="insights-section">
+        <div class="insight-box" id="school-density-insight-1"></div>
+        <div class="insight-box" id="school-density-insight-2"></div>
+        <div class="insight-box" id="school-density-insight-3"></div>
+      </div>
+    </div>
+
+    <hr divider>
+
+    <!-- Stage Gap Section -->
+    <div class="section-title">
+      <h2>Educational Stage Gap Analysis</h2>
+      <p>Comparing primary and secondary education access across states</p>
+    </div>
+    <div class="visualization-section">
+      <div id="stage-gap-dashboard" class="vis-container"></div>
+      <div id="stage-gap-insights" class="insights-section">
+        <div class="insight-box" id="stage-gap-insight-1"></div>
+        <div class="insight-box" id="stage-gap-insight-2"></div>
+        <div class="insight-box" id="stage-gap-insight-3"></div>
+      </div>
+    </div>
+
+    <hr divider>
+
+    <!-- Time Series Section -->
+    <div class="section-title">
+      <h2>Trends Over Time</h2>
+      <p>How education access has evolved from 2017 to 2022</p>
+    </div>
+    <div class="visualization-section">
+      <div id="time-series-dashboard" class="vis-container"></div>
+      <div id="time-series-insights" class="insights-section">
+        <div class="insight-box" id="time-series-insight-1"></div>
+        <div class="insight-box" id="time-series-insight-2"></div>
+        <div class="insight-box" id="time-series-insight-3"></div>
+      </div>
+    </div>
+
+    <hr divider>
+
+    <!-- Population Comparison Section -->
+    <div class="section-title">
+      <h2>Population vs Student Distribution</h2>
+      <p>Comparing state populations with student enrollment numbers</p>
+    </div>
+    <div class="visualization-section">
+      <div id="population-dashboard" class="vis-container"></div>
+      <div id="population-insights" class="insights-section">
+        <div class="insight-box" id="population-insight-1"></div>
+        <div class="insight-box" id="population-insight-2"></div>
+        <div class="insight-box" id="population-insight-3"></div>
+      </div>
+    </div>
 
     <!-- Footer -->
     <div class="small-font">
+      <p class="meta"><br>Author: Yuan Kah Mun · Last updated: 19 October 2025</p>
 
-    <p class="meta"><br>Author: Yuan Kah Mun · Last updated: 19 October 2025</p>
+      <p class="meta"><br>Data Source:</p>
 
-    <p class="meta"><br>Data Source:</p>
+      <p class="meta">
+      1. OpenDOSM —
+      <a href="https://open.dosm.gov.my/data-catalogue/schools_district?state=kedah&district=all-districts&stage=secondary&type=sekolah-menengah-kerajaan&visual=table" target="_blank">
+          School District Data
+      </a>
+      </p>
 
-    <p class="meta">
-    1. OpenDOSM —
-    <a href="https://open.dosm.gov.my/data-catalogue/schools_district?state=kedah&district=all-districts&stage=secondary&type=sekolah-menengah-kerajaan&visual=table" target="_blank">
-        https://open.dosm.gov.my/data-catalogue/schools_district?state=kedah&district=all-districts&stage=secondary&type=sekolah-menengah-kerajaan&visual=table
-    </a>
-    </p>
+      <p class="meta">
+      2. OpenDOSM —
+      <a href="https://open.dosm.gov.my/data-catalogue/enrolment_school_district?state=malaysia&district=all-districts&stage=post-secondary&sex=both&visual=table" target="_blank">
+          Enrollment Data
+      </a>
+      </p>
 
-    <p class="meta">
-    2. OpenDOSM —
-    <a href="https://open.dosm.gov.my/data-catalogue/enrolment_school_district?state=malaysia&district=all-districts&stage=post-secondary&sex=both&visual=table" target="_blank">
-        https://open.dosm.gov.my/data-catalogue/enrolment_school_district?state=malaysia&district=all-districts&stage=post-secondary&sex=both&visual=table
-    </a>
-    </p>
-
-    <p class="meta">
-    3. simplemaps —
-    <a href="https://simplemaps.com/data/my-cities" target="_blank">
-        https://simplemaps.com/data/my-cities
-    </a>
-    </p>
-    
-
+      <p class="meta">
+      3. simplemaps —
+      <a href="https://simplemaps.com/data/my-cities" target="_blank">
+          City Mapping Data
+      </a>
+      </p>
     </div>
-
   </div>
 
-<script>
-  // We'll keep a single embed + a single set of listeners
-  vegaEmbed("#dashboard", "js/dashboard_basic_ed.vg.json", { actions: false, renderer: "svg" })
-    .then(async ({ view }) => {
-      // HTML controls
-      const stageEl  = document.getElementById('stage-select');
-      const yearEl   = document.getElementById('year-select');
-      const stateEl  = document.getElementById('state-select');
-      const zoomEl   = document.getElementById('zoom');
+  <script>
+    // Insights Configuration
+    const INSIGHTS_CONFIG = {
+      'map': {
+        'primary': [
+          {
+            icon: '🗺️',
+            title: 'Spatial Learning Distribution',
+            description: 'Regional variations show how primary education access differs across Malaysian states based on population density.'
+          },
+          {
+            icon: '🏫',
+            title: 'Regional Education Infrastructure',
+            description: 'Urban and developed states typically show higher student-to-population ratios in primary education.'
+          },
+          {
+            icon: '📊',
+            title: 'Enrollment Patterns',
+            description: 'Geographic and socioeconomic factors influence primary education enrollment rates across regions.'
+          }
+        ],
+        'secondary': [
+          {
+            icon: '🗺️',
+            title: 'Spatial Learning Distribution',
+            description: 'Regional variations show how secondary education access differs across Malaysian states based on population density.'
+          },
+          {
+            icon: '🏫',
+            title: 'Infrastructure Differences',
+            description: 'Secondary schools tend to be more centralized in urban areas.'
+          },
+          {
+            icon: '📊',
+            title: 'Access Variations',
+            description: 'Regional disparities in secondary education access highlight infrastructure and demographic challenges.'
+          }
+        ]
+      },
+      'school-density': {
+        'primary': [
+          {
+            icon: '📍',
+            title: 'School Size Patterns',
+            description: 'Average students per school varies significantly across states, reflecting differences in school infrastructure and planning.'
+          },
+          {
+            icon: '👥',
+            title: 'Resource Distribution',
+            description: 'States with larger average school sizes may face different resource allocation challenges compared to those with smaller schools.'
+          },
+          {
+            icon: '🎯',
+            title: 'Crowding Analysis',
+            description: 'Deviation from national median reveals which states have more or less crowded schools relative to the national average.'
+          }
+        ],
+        'secondary': [
+          {
+            icon: '📍',
+            title: 'School Size Patterns',
+            description: 'Average students per school varies significantly across states, reflecting differences in school infrastructure and planning.'
+          },
+          {
+            icon: '👥',
+            title: 'Capacity Variations',
+            description: 'Regional differences in secondary school sizes reflect varying approaches to education delivery and infrastructure.'
+          },
+          {
+            icon: '🎯',
+            title: 'National Comparison',
+            description: 'States deviating significantly from the median highlight areas with potential overcrowding or underutilization concerns.'
+          }
+        ]
+      },
+      'stage-gap': {
+        'default': [
+          {
+            icon: '📉',
+            title: 'Educational Stage Gap',
+            description: 'Difference between primary and secondary education access.'
+          },
+          {
+            icon: '🔍',
+            title: 'Regional Disparities',
+            description: 'Some states show larger gaps between primary and secondary enrollment.'
+          },
+          {
+            icon: '⚖️',
+            title: 'Equity Concerns',
+            description: 'Stage gap analysis reveals areas needing attention.'
+          }
+        ]
+      },
+      'time-series': {
+        'primary': [
+          {
+            icon: '📈',
+            title: 'Trends Over Time',
+            description: 'Primary education enrollment trends from 2017-2022.'
+          },
+          {
+            icon: '🔄',
+            title: 'Changes and Patterns',
+            description: 'Observable shifts in primary education access over the years.'
+          },
+          {
+            icon: '🎯',
+            title: 'Growth Analysis',
+            description: 'Year-over-year changes in student population ratios.'
+          }
+        ],
+        'secondary': [
+          {
+            icon: '📈',
+            title: 'Trends Over Time',
+            description: 'Secondary education enrollment trends from 2017-2022.'
+          },
+          {
+            icon: '🔄',
+            title: 'Changes and Patterns',
+            description: 'Observable shifts in secondary education access over the years.'
+          },
+          {
+            icon: '🎯',
+            title: 'Growth Analysis',
+            description: 'Year-over-year changes in student population ratios.'
+          }
+        ]
+      },
+      'population': {
+        'default': [
+          {
+            icon: '👨‍👩‍👧‍👦',
+            title: 'Population vs Total Students',
+            description: 'Comparative analysis of state populations and total student enrollment across all education stages.'
+          },
+          {
+            icon: '📊',
+            title: 'Educational Scale',
+            description: 'Visualizes the relationship between population size and overall student numbers in each state.'
+          },
+          {
+            icon: '🌏',
+            title: 'State-by-State Overview',
+            description: 'States with different population-to-student ratios.'
+          }
+        ]
+      }
+    };
+
+    // Dashboard Initialization Function
+    function initializeDashboard() {
+      const stageEl = document.getElementById('stage-select');
+      const yearEl = document.getElementById('year-select');
+      const stateEl = document.getElementById('state-select');
+      const zoomEl = document.getElementById('zoom');
       const centerEl = document.getElementById('center');
 
-      // Helpers to update signals
-      const setZoom   = v => view.signal('Zoom', +v);
-      const setCenter = v => view.signal('CenterTo', JSON.parse(v));
-
-      async function syncAll() {
-        const y = parseInt(yearEl.value, 10);
-        const k = Math.random(); // forces recompute where you use Rekey
-
-        await view
-          .signal('StageSel', stageEl.value)
-          .signal('YearSel',  y)
-          .signal('StateSel', stateEl.value)
-          .signal('Rekey',    k)
-          .signal('Zoom',     +zoomEl.value)          // NEW
-          .signal('CenterTo', JSON.parse(centerEl.value)) // NEW
-          .runAsync();
+      function updateVisualizationInsights(visType, stage) {
+        const insightKey = INSIGHTS_CONFIG[visType][stage] ? stage : 'default';
+        const insights = INSIGHTS_CONFIG[visType][insightKey];
+        
+        if (insights) {
+          insights.forEach((insight, index) => {
+            const insightBox = document.getElementById(`${visType}-insight-${index + 1}`);
+            if (insightBox) {
+              insightBox.innerHTML = `
+                <h3>${insight.icon} ${insight.title}</h3>
+                <p>${insight.description}</p>
+              `;
+            }
+          });
+        }
       }
 
+      function syncAllVisualizations() {
+        const stage = stageEl.value;
+        const year = parseInt(yearEl.value, 10);
+        const state = stateEl.value;
+        const zoom = +zoomEl.value;
+        const center = JSON.parse(centerEl.value);
+
+        console.log('Syncing with:', { stage, year, state, zoom, center });
+
+        // Update all Vega views
+        document.querySelectorAll('.vis-container').forEach(container => {
+          const view = container.__vega_view__;
+          if (view) {
+            try {
+              // Check which signals exist in this view
+              const signals = view._runtime.signals;
+              
+              if (signals.StageSel) view.signal('StageSel', stage);
+              if (signals.YearSel) view.signal('YearSel', year);
+              if (signals.StateSel) view.signal('StateSel', state);
+              if (signals.Zoom) view.signal('Zoom', zoom);
+              if (signals.CenterTo) view.signal('CenterTo', center);
+              
+              view.run();
+            } catch (err) {
+              console.error('Error updating view:', container.id, err);
+            }
+          }
+        });
+
+        // Update insights for each visualization
+        updateVisualizationInsights('map', stage);
+        updateVisualizationInsights('school-density', stage);
+        updateVisualizationInsights('stage-gap', 'default');
+        updateVisualizationInsights('time-series', stage);
+        updateVisualizationInsights('population', 'default');
+      }
+
+      // Event listeners for filters
+      stageEl.addEventListener('change', syncAllVisualizations);
+      yearEl.addEventListener('change', syncAllVisualizations);
+      stateEl.addEventListener('change', syncAllVisualizations);
+      zoomEl.addEventListener('change', syncAllVisualizations);
+      centerEl.addEventListener('change', syncAllVisualizations);
+
       // Initial sync
-      await syncAll();
+      syncAllVisualizations();
+    }
 
-      // Events
-      stageEl.addEventListener('change', syncAll);
-      yearEl .addEventListener('change', syncAll);
-      stateEl.addEventListener('change', syncAll);
+    // Initialize visualizations
+    Promise.all([
+      vegaEmbed("#map-dashboard", "./visualizations/map-visualization.vg.json", { actions: false, renderer: "svg" }),
+      vegaEmbed("#school-density-dashboard", "./visualizations/school-density-visualization.vg.json", { actions: false, renderer: "svg" }),
+      vegaEmbed("#stage-gap-dashboard", "./visualizations/stage-gap-visualization.vg.json", { actions: false, renderer: "svg" }),
+      vegaEmbed("#time-series-dashboard", "./visualizations/time-series-visualization.vg.json", { actions: false, renderer: "svg" }),
+      vegaEmbed("#population-dashboard", "./visualizations/population-comparison-visualization.vg.json", { actions: false, renderer: "svg" })
+    ]).then((embedResults) => {
+      console.log('All visualizations loaded successfully');
+      
+      // Store references to views
+      embedResults.forEach(({view}, index) => {
+        const containers = document.querySelectorAll('.vis-container');
+        containers[index].__vega_view__ = view;
+        console.log(`Stored view ${index}:`, containers[index].id);
+      });
 
-      // Zoom reacts as you drag; change → when you release
-      zoomEl .addEventListener('input',  () => { setZoom(zoomEl.value); view.run(); });
-      zoomEl .addEventListener('change', () => { setZoom(zoomEl.value); view.run(); });
-
-      centerEl.addEventListener('change', () => { setCenter(centerEl.value); view.run(); });
+      // Initialize dashboard AFTER embeds are complete
+      initializeDashboard();
+    }).catch(err => {
+      console.error("Visualization loading failed:", err);
     });
-</script>
-
-
+  </script>
 </body>
 </html>

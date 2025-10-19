@@ -1,0 +1,207 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "autosize": { "type": "fit", "contains": "padding" },
+  "params": [
+    { "name": "StageSel", "value": "primary" },
+    { "name": "YearSel",  "value": 2022 },
+    { "name": "StateSel", "value": "Johor" }
+  ],
+  "title": {
+    "text": "How basic education access changes over time by students per 1000 population",
+    "subtitle": "Filter by States",
+    "anchor": "middle"
+  },
+  "data": { 
+    "url": "./data/compiled_my_basiced_districtenrolment.csv" 
+  },
+  "vconcat": [
+    {
+      "layer": [
+        {
+          "transform": [
+            { 
+              "calculate": "indexof(datum.state,'W.p. ')==0 ? substring(datum.state,5) : datum.state", 
+              "as": "state_norm" 
+            },
+            { "filter": "datum.state_norm === StateSel" },
+            {
+              "aggregate": [
+                { "op": "sum", "field": "students", "as": "students" },
+                { "op": "sum", "field": "population", "as": "population" },
+                { "op": "max", "field": "state_norm", "as": "state_norm" }
+              ],
+              "groupby": ["stage", "year"]
+            },
+            { 
+              "calculate": "(datum.students / max(datum.population,1)) * 1000", 
+              "as": "students_per_1000_pop" 
+            },
+            { "calculate": "toDate(datum.year + '-01-01')", "as": "year_dt" },
+            { "filter": { "param": "brush" } }
+          ],
+          "mark": { "type": "line" },
+          "encoding": {
+            "x": { 
+              "field": "year_dt", 
+              "type": "temporal", 
+              "title": "Year" 
+            },
+            "y": { 
+              "field": "students_per_1000_pop", 
+              "type": "quantitative",
+              "title": "Students per 1000 population", 
+              "scale": { "domain": [0,800] } 
+            },
+            "color": { 
+              "field": "stage", 
+              "type": "nominal", 
+              "title": "Stage",
+              "scale": { 
+                "domain": ["primary","secondary"], 
+                "range": ["#4e79a7","#f28e2b"] 
+              } 
+            },
+            "order": { "field": "year_dt" }
+          }
+        },
+        {
+          "transform": [
+            { 
+              "calculate": "indexof(datum.state,'W.p. ')==0 ? substring(datum.state,5) : datum.state", 
+              "as": "state_norm" 
+            },
+            { "filter": "datum.state_norm === StateSel" },
+            {
+              "aggregate": [
+                { "op": "sum", "field": "students", "as": "students" },
+                { "op": "sum", "field": "population", "as": "population" },
+                { "op": "max", "field": "state_norm", "as": "state_norm" }
+              ],
+              "groupby": ["stage", "year"]
+            },
+            { 
+              "calculate": "(datum.students / max(datum.population,1)) * 1000", 
+              "as": "students_per_1000_pop" 
+            },
+            { "calculate": "toDate(datum.year + '-01-01')", "as": "year_dt" },
+            { "filter": { "param": "brush" } }
+          ],
+          "mark": { "type": "point", "filled": true },
+          "encoding": {
+            "x": { "field": "year_dt", "type": "temporal" },
+            "y": { "field": "students_per_1000_pop", "type": "quantitative" },
+            "color": { 
+              "field": "stage", 
+              "type": "nominal", 
+              "legend": null,
+              "scale": { 
+                "domain": ["primary","secondary"], 
+                "range": ["#4e79a7","#f28e2b"] 
+              } 
+            },
+            "tooltip": [
+              { "field": "state_norm", "title": "State" },
+              { "field": "stage", "title": "Stage" },
+              { "field": "year",  "title": "Year" },
+              { 
+                "field": "students_per_1000_pop", 
+                "title": "Per 1000", 
+                "format": ".1f" 
+              }
+            ]
+          }
+        }
+      ],
+      "width": 1300,
+      "height": 300
+    },
+    {
+      "title": {
+        "text": "Brush the bottom chart to zoom the top (2017–2022)",
+        "fontSize": 14,
+        "fontWeight": "normal",
+        "dy": 20
+      },
+      "mark": { "type": "area", "opacity": 0.4 },
+      "params": [ 
+        { 
+          "name": "brush", 
+          "select": { 
+            "type": "interval", 
+            "encodings": ["x"] 
+          } 
+        } 
+      ],
+      "transform": [
+        { 
+          "calculate": "indexof(datum.state,'W.p. ')==0 ? substring(datum.state,5) : datum.state", 
+          "as": "state_norm" 
+        },
+        { "filter": "datum.state_norm === StateSel" },
+        {
+          "aggregate": [
+            { "op": "sum", "field": "students", "as": "students" },
+            { "op": "sum", "field": "population", "as": "population" }
+          ],
+          "groupby": ["stage","year"]
+        },
+        { 
+          "calculate": "(datum.students / max(datum.population,1)) * 1000", 
+          "as": "students_per_1000_pop" 
+        },
+        { "calculate": "toDate(datum.year + '-01-01')", "as": "year_dt" }
+      ],
+      "encoding": {
+        "x": { 
+          "field": "year_dt", 
+          "type": "temporal", 
+          "axis": { "title": null } 
+        },
+        "y": { 
+          "field": "students_per_1000_pop", 
+          "type": "quantitative",
+          "axis": { "tickCount": 3, "grid": false, "title": null } 
+        },
+        "color": { 
+          "field": "stage", 
+          "type": "nominal", 
+          "legend": null,
+          "scale": { 
+            "domain": ["primary","secondary"], 
+            "range": ["#4e79a7","#f28e2b"] 
+          } 
+        }
+      },
+      "width": 1300,
+      "height": 70
+    }
+  ],
+  "config": {
+    "font": "PT Serif",
+    "title": { 
+      "font": "PT Serif", 
+      "fontSize": 20, 
+      "fontWeight": 700,
+      "subtitleFont": "PT Serif", 
+      "subtitleFontSize": 16,   
+      "subtitlePadding": 16,
+      "offset": 50
+    },
+    "axis": { 
+      "labelFont": "DM Sans", 
+      "titleFont": "PT Serif", 
+      "titleFontWeight": 700 
+    },
+    "legend": { 
+      "labelFont": "DM Sans", 
+      "titleFont": "PT Serif", 
+      "titleFontWeight": 700 
+    },
+    "header": { 
+      "labelFont": "DM Sans", 
+      "titleFont": "PT Serif", 
+      "titleFontWeight": 700 
+    },
+    "view": { "stroke": null }
+  }
+}
