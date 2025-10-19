@@ -34,7 +34,7 @@
         {
           "lookup": "state_norm",
           "from": {
-            "data": { "url": "/data/malaysia_states.topojson", "format": { "type": "topojson", "feature": "states" } },
+            "data": { "url": "https://yuankahmun.github.io/FIT3179A2/data/malaysia_states.topojson", "format": { "type": "topojson", "feature": "states" } },
             "key": "properties.name",
             "fields": ["type","properties","geometry"]
           }
