@@ -12,7 +12,10 @@
     { "name": "StageSel", "value": "primary" },
     { "name": "YearSel",  "value": 2022 },
     { "name": "StateSel", "value": "Johor" },
-    { "name": "Rekey", "value": 0 }
+    { "name": "Rekey", "value": 0 },
+
+    { "name": "Zoom",     "value": 2250 },
+    { "name": "CenterTo", "value": [109.3, 4.2] }
 
     ],
 
@@ -28,7 +31,13 @@
     {
       "title": { "text": "Basic Education Access on students per 1000 population by stage in Malaysia", "subtitle": "Filter by Selected Stage & Year" },
       "width": 1100, "height": 520,
-      "projection": { "type": "mercator", "center": [109.3, 4.2], "scale": 1850, "translate": [420, 260] },
+      "projection": {
+        "type":"mercator",
+        "center":{"expr":"CenterTo"},
+        "scale":{"expr":"Zoom"},
+        "translate":[420,260]
+      },
+
       "layer": [
         {
           "data": { "graticule": { "step": [3, 3] } },
@@ -92,10 +101,10 @@
             { "calculate": "toNumber(datum.lat)", "as": "lat_n" },
             { "calculate": "toNumber(datum.lng)", "as": "lng_n" },
             { "window": [{ "op": "rank", "as": "r" }], "sort": [{ "field": "rate", "order": "descending" }] },
-            { "calculate": "toString(datum.r) + '. ' + datum.state_norm", "as": "label" },
+            { "calculate": "datum.state_norm", "as": "label" },
             { "filter": "datum.r <= 5" }
           ],
-          "mark": { "type": "text", "fontSize": 12, "fontWeight": "bold", "dx": 6, "dy": -6 },
+          "mark": { "type": "text", "fontSize": 10, "fontWeight": "bold", "dx": 6, "dy": -6 },
           "encoding": {
             "longitude": { "field": "lng_n" },
             "latitude":  { "field": "lat_n" },
@@ -236,12 +245,12 @@
           }
         }
       ],
-      "width": 590,
+      "width": 500,
       "height": { "step": 20 }
     }
   ],
 
-  "spacing": 28,
+  "spacing": 35,
   "resolve": { "scale": { "x": "independent", "y": "independent", "color": "independent" } }
 },
 
@@ -502,9 +511,10 @@
   "resolve": { "scale": { "x": "independent", "y": "independent", "color": "independent" } },
 
   "config": {
-    "font": "DM Sans",
-    "title": { "font": "PT Serif", "fontSize": 18, "fontWeight": 700,
-      "subtitleFont": "PT Serif", "subtitleFontSize": 14 },
+    "font": "PT Serif",
+    "title": { "font": "PT Serif", "fontSize": 20, "fontWeight": 700,
+      "subtitleFont": "PT Serif", "subtitleFontSize": 16,   "subtitlePadding": 16,
+      "offset": 50},
     "axis":  { "labelFont": "DM Sans", "titleFont": "PT Serif", "titleFontWeight": 700 },
     "legend":{ "labelFont": "DM Sans", "titleFont": "PT Serif", "titleFontWeight": 700 },
     "header":{ "labelFont": "DM Sans", "titleFont": "PT Serif", "titleFontWeight": 700 },

@@ -21,6 +21,12 @@
   <!-- Your styles -->
   <link rel="stylesheet" href="css/styles.css" />
 </head>
+
+
+
+
+
+
 <body>
   <div class="page">
     
@@ -28,12 +34,13 @@
     <div class="page-header">
       <h1>Basic Education Access Across Malaysia</h1>
       <p class="subtitle">Interactive multiple views: Select Stage, Year & State once and explore across coordinated charts</p>
-      <p class="meta">Author: Yuan Kah Mun · Last updated: 15 October 2025</p>
+      
 
     </div>
 
     <!-- Custom Filters -->
     <div class="custom-filters">
+
       <div class="filter-group">
         <label for="stage-select">Stage:</label>
         <select id="stage-select">
@@ -75,6 +82,21 @@
           <option value="Putrajaya">Putrajaya</option>
         </select>
       </div>
+
+      <div class="filter-group">
+        <label for="zoom">Zoom:</label>
+        <input id="zoom" type="range" min="600" max="5000" step="50" value="1850">
+      </div>
+
+      <div class="filter-group">
+        <label for="center">Map centre:</label>
+        <select id="center">
+          <option value='[102,4.5]'>West Malaysia</option>
+          <option value='[114.5,2.0]'>East Malaysia</option>
+          <option value='[109.3,4.2]' selected>Whole Malaysia</option>
+        </select>
+      </div>
+
     </div>
 
     <!-- Dashboard Visualization -->
@@ -82,7 +104,9 @@
 
     <!-- Footer -->
     <div class="small-font">
-    <p>This visualization explores basic education access patterns in Malaysia.     </p>
+
+    <p class="meta"><br>Author: Yuan Kah Mun · Last updated: 19 October 2025</p>
+
     <p class="meta"><br>Data Source:</p>
 
     <p class="meta">
@@ -105,39 +129,57 @@
         https://simplemaps.com/data/my-cities
     </a>
     </p>
+    
 
     </div>
 
   </div>
 
 <script>
-  let view; // to hold the main vega view instance
+  // We'll keep a single embed + a single set of listeners
+  vegaEmbed("#dashboard", "js/dashboard_basic_ed.vg.json", { actions: false, renderer: "svg" })
+    .then(async ({ view }) => {
+      // HTML controls
+      const stageEl  = document.getElementById('stage-select');
+      const yearEl   = document.getElementById('year-select');
+      const stateEl  = document.getElementById('state-select');
+      const zoomEl   = document.getElementById('zoom');
+      const centerEl = document.getElementById('center');
 
-  vegaEmbed("#dashboard", "js/dashboard_basic_ed.vg.json", {actions:false, renderer:"svg"})
-    .then(async ({view}) => {
-      const stageEl = document.getElementById('stage-select');
-      const yearEl  = document.getElementById('year-select');
-      const stateEl = document.getElementById('state-select');
+      // Helpers to update signals
+      const setZoom   = v => view.signal('Zoom', +v);
+      const setCenter = v => view.signal('CenterTo', JSON.parse(v));
 
       async function syncAll() {
-        const y = parseInt(yearEl.value);
-        const k = Math.random(); // new key each interaction
+        const y = parseInt(yearEl.value, 10);
+        const k = Math.random(); // forces recompute where you use Rekey
+
         await view
           .signal('StageSel', stageEl.value)
           .signal('YearSel',  y)
           .signal('StateSel', stateEl.value)
           .signal('Rekey',    k)
+          .signal('Zoom',     +zoomEl.value)          // NEW
+          .signal('CenterTo', JSON.parse(centerEl.value)) // NEW
           .runAsync();
       }
 
-      // initial sync
+      // Initial sync
       await syncAll();
 
+      // Events
       stageEl.addEventListener('change', syncAll);
       yearEl .addEventListener('change', syncAll);
       stateEl.addEventListener('change', syncAll);
+
+      // Zoom reacts as you drag; change → when you release
+      zoomEl .addEventListener('input',  () => { setZoom(zoomEl.value); view.run(); });
+      zoomEl .addEventListener('change', () => { setZoom(zoomEl.value); view.run(); });
+
+      centerEl.addEventListener('change', () => { setCenter(centerEl.value); view.run(); });
     });
 </script>
+
 
 </body>
 </html>
