@@ -12,7 +12,7 @@
         "text": "Average number of students per school within each state by stage",
         "subtitle": " Filter by Selected Year"
       },
-      "data": { "url": "./data/compiled_my_basiced_districtenrolment.csv" },
+      "data": { "url": "https://yuankahmun.github.io/FIT3179A2/data/compiled_my_basiced_districtenrolment.csv" },
       "transform": [
         { "filter": "datum.year == YearSel" },
         {
@@ -58,7 +58,7 @@
         "text": "Crowding deviation on students per school vs national median",
         "subtitle": "Filter by Selected Stage & Year"
       },
-      "data": { "url": "./data/compiled_my_basiced_districtenrolment.csv" },
+      "data": { "url": "https://yuankahmun.github.io/FIT3179A2/data/compiled_my_basiced_districtenrolment.csv" },
       "transform": [
         { "filter": "datum.stage == StageSel && datum.year == YearSel" },
         { "calculate": "indexof(datum.state,'W.p. ')==0 ? substring(datum.state,5) : datum.state", "as": "state_norm" },

@@ -13,7 +13,7 @@
     "subtitle": "Filter by Selected Year" 
   },
   "data": { 
-    "url": "./data/compiled_my_basiced_districtenrolment.csv" 
+    "url": "https://yuankahmun.github.io/FIT3179A2/data/compiled_my_basiced_districtenrolment.csv" 
   },
   "transform": [
     { "filter": "datum.year == YearSel" },
